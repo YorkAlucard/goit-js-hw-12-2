@@ -8,16 +8,16 @@ export function markup(data) {
   const { hits } = data;
   const box = document.querySelector('.gallery');
 
-  if (hits.length === 0) {
-    iziToast.show({
-      ...iziOption,
-      message:
-        'Sorry, there are no images matching your search query. Please, try again!',
-    });
-    box.innerHTML = '';
+  // if (hits.length === 0) {
+  //   iziToast.show({
+  //     ...iziOption,
+  //     message:
+  //       'Sorry, there are no images matching your search query. Please, try again!',
+  //   });
+  //   box.innerHTML = '';
 
-    return;
-  }
+  //   return;
+  // }
   const markup = hits
     .map(
       image => `
@@ -45,4 +45,16 @@ export function markup(data) {
     captionDelay: 250,
   });
   lightbox.refresh();
+  return markup;
+}
+
+export function smoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 }
