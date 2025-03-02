@@ -1,0 +1,169 @@
+* {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.search-form {
+  display: flex;
+  column-gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 36px;
+}
+
+.search-input {
+  border: 1px solid #000;
+  border-radius: 4px;
+  width: 272px;
+  height: 40px;
+  padding: 8px 16px;
+  color: #808080;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.04em;
+  outline: none;
+}
+.search-input:hover {
+  border: 1px solid #000;
+}
+.search-input:focus {
+  border: 1px solid #4e75ff;
+}
+.button {
+  border-radius: 8px;
+  padding: 8px 16px;
+  width: 91px;
+  height: 40px;
+  background-color: #4e75ff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.04em;
+  color: #fff;
+  border: none;
+}
+.button:hover {
+  background-color: #6c8cff;
+}
+
+.gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  gap: 24px;
+  list-style: none;
+}
+.gallery__item {
+  border: 1px solid #808080;
+}
+.gallery__link {
+  display: flex;
+  flex-direction: column;
+}
+.gallery__img {
+  width: 360px;
+  height: 160px;
+  margin-bottom: 4px;
+  object-fit: cover;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+  width: 360px;
+  height: 48px;
+}
+.grid p,
+.grid span {
+  font-size: 12px;
+  color: #2e2f42;
+  font-family: Montserrat;
+  letter-spacing: 0.48px;
+}
+.grid p {
+  line-height: 16px;
+  font-weight: 600;
+}
+.grid span {
+  line-height: 24px;
+}
+.iziToast-close {
+  background-image: url('../img/close.svg');
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+}
+.iziToast {
+  max-width: 432px; /* Встановлюємо максимальну ширину */
+  width: 100%; /* Додаємо ширину 100% для адаптивності */
+  border: 2px solid #fafafb;
+  border-radius: 5px;
+}
+
+.iziToast-red {
+  background-color: #ef4040;
+  color: #fafafb;
+}
+
+.iziToast-red .iziToast-title,
+.iziToast-red .iziToast-message {
+  color: #fafafb;
+}
+
+.iziToast-red .iziToast-close {
+  color: #fafafb;
+}
+
+.iziToast-red .iziToast-icon {
+  color: #fafafb;
+}
+
+.iziToast-red .iziToast-icon--custom {
+  background-color: transparent;
+  color: #fafafb;
+}
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  background: #ff3d00;
+  width: 3px;
+  height: 24px;
+  transform: translateX(-50%);
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
