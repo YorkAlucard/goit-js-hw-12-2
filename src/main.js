@@ -1,8 +1,11 @@
 import { getImage } from './js/pixabay-api.js';
+import { smoothScroll } from './js/render-functions.js';
 import errorIcon from './img/error.svg';
 import closeIcon from './img/close.svg';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export const iziOption = {
   messageColor: '#FAFAFB',
@@ -20,6 +23,7 @@ export const iziOption = {
 
 let page = 1;
 let query = '';
+let lightbox;
 
 document
   .querySelector('.search-form')
@@ -41,13 +45,42 @@ document
       '<p>Wait, the image is loaded</p><span class="loader"></span>';
     const data = await getImage(query, page);
     box.innerHTML = data;
-    loadMoreBtn.style.display = 'block';
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+
+    if (data) {
+      loadMoreBtn.style.display = 'block';
+    } else {
+      loadMoreBtn.style.display = 'none';
+    }
   });
 
 document.querySelector('.load-more').addEventListener('click', async () => {
   const box = document.querySelector('.gallery');
+  const loadMoreBtn = document.querySelector('.load-more');
+
+  loadMoreBtn.textContent = 'Loading...';
+  loadMoreBtn.disabled = true;
+
   page += 1;
-  const data = await getImage(query, page);
-  box.insertAdjacentHTML('beforeend', data);
-  smoothScroll();
+  // const data = await getImage(query, page);
+  const newMarkup = await getImage(query, page);
+
+  if (newMarkup) {
+    box.insertAdjacentHTML('beforeend', data);
+    if (lightbox) {
+      lightbox.refresh();
+    } else {
+      lightbox = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionDelay: 250,
+      });
+    }
+    smoothScroll();
+  }
+
+  loadMoreBtn.textContent = 'Load more';
+  loadMoreBtn.disabled = false;
 });

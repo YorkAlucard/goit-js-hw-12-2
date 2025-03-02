@@ -22,13 +22,14 @@ export async function getImage(query, page) {
   try {
     const response = await axios.get(URL);
     const data = response.data;
+
     if (data.hits.length === 0 && page === 1) {
       iziToast.show({
         ...iziOption,
         message:
           'Sorry, there are no images matching your search query. Please, try again.',
       });
-      box.innerHTML = '';
+      // box.innerHTML = '';
       return '';
     }
     if (data.hits.length === 0) {
@@ -39,10 +40,11 @@ export async function getImage(query, page) {
       });
       return '';
     }
+
     return markup(data);
   } catch (error) {
     console.error(error);
-    box.innerHTML = '';
+    // box.innerHTML = '';
     iziToast.show({
       ...iziOption,
       message: 'Sorry, an error happened. Try again later',

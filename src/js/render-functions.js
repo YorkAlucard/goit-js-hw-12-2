@@ -8,16 +8,16 @@ export function markup(data) {
   const { hits } = data;
   const box = document.querySelector('.gallery');
 
-  // if (hits.length === 0) {
-  //   iziToast.show({
-  //     ...iziOption,
-  //     message:
-  //       'Sorry, there are no images matching your search query. Please, try again!',
-  //   });
-  //   box.innerHTML = '';
+  if (hits.length === 0) {
+    //   iziToast.show({
+    //     ...iziOption,
+    //     message:
+    //       'Sorry, there are no images matching your search query. Please, try again!',
+    //   });
+    //   box.innerHTML = '';
 
-  //   return;
-  // }
+    return '';
+  }
   const markup = hits
     .map(
       image => `
@@ -39,7 +39,8 @@ export function markup(data) {
       `
     )
     .join('');
-  box.innerHTML = markup;
+
+  // box.innerHTML = markup;
   const lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionDelay: 250,
