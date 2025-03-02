@@ -69,7 +69,7 @@ document.querySelector('.load-more').addEventListener('click', async () => {
   const newMarkup = await getImage(query, page);
 
   if (newMarkup) {
-    box.insertAdjacentHTML('beforeend', data);
+    box.insertAdjacentHTML('beforeend', newMarkup);
     if (lightbox) {
       lightbox.refresh();
     } else {
