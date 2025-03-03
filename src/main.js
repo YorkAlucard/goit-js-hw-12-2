@@ -57,7 +57,6 @@ document
           captionDelay: 250,
         });
 
-        // Показуємо кнопку "Load more" тільки якщо є більше зображень для завантаження
         if (totalHits > perPage) {
           loadMoreBtn.style.display = 'block';
         } else {
@@ -103,7 +102,6 @@ document.querySelector('.load-more').addEventListener('click', async () => {
       }
       smoothScroll();
 
-      // Перевіряємо, чи є ще зображення для завантаження
       if (page * perPage >= totalHits) {
         loadMoreBtn.style.display = 'none';
         iziToast.show({
