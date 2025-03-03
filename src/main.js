@@ -24,6 +24,8 @@ export const iziOption = {
 let page = 1;
 let query = '';
 let lightbox;
+const perPage = 40;
+let totalHits = 0;
 
 document
   .querySelector('.search-form')
@@ -43,17 +45,36 @@ document
     page = 1;
     box.innerHTML =
       '<p>Wait, the image is loaded</p><span class="loader"></span>';
-    const data = await getImage(query, page);
-    box.innerHTML = data;
-    lightbox = new SimpleLightbox('.gallery a', {
-      captionsData: 'alt',
-      captionDelay: 250,
-    });
+    try {
+      const response = await getImage(query, page);
+      const { markup, totalHits: newTotalHits } = response;
+      totalHits = newTotalHits;
 
-    if (data) {
-      loadMoreBtn.style.display = 'block';
-    } else {
+      if (markup) {
+        box.innerHTML = markup;
+        lightbox = new SimpleLightbox('.gallery a', {
+          captionsData: 'alt',
+          captionDelay: 250,
+        });
+
+        // Показуємо кнопку "Load more" тільки якщо є більше зображень для завантаження
+        if (totalHits > perPage) {
+          loadMoreBtn.style.display = 'block';
+        } else {
+          loadMoreBtn.style.display = 'none';
+        }
+      } else {
+        box.innerHTML = '';
+        loadMoreBtn.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Error loading images:', error);
+      box.innerHTML = '';
       loadMoreBtn.style.display = 'none';
+      iziToast.show({
+        ...iziOption,
+        message: 'An error occurred while loading images',
+      });
     }
   });
 
@@ -65,22 +86,42 @@ document.querySelector('.load-more').addEventListener('click', async () => {
   loadMoreBtn.disabled = true;
 
   page += 1;
-  // const data = await getImage(query, page);
-  const newMarkup = await getImage(query, page);
 
-  if (newMarkup) {
-    box.insertAdjacentHTML('beforeend', newMarkup);
-    if (lightbox) {
-      lightbox.refresh();
+  try {
+    const response = await getImage(query, page);
+    const { markup: newMarkup } = response;
+
+    if (newMarkup) {
+      box.insertAdjacentHTML('beforeend', newMarkup);
+      if (lightbox) {
+        lightbox.refresh();
+      } else {
+        lightbox = new SimpleLightbox('.gallery a', {
+          captionsData: 'alt',
+          captionDelay: 250,
+        });
+      }
+      smoothScroll();
+
+      // Перевіряємо, чи є ще зображення для завантаження
+      if (page * perPage >= totalHits) {
+        loadMoreBtn.style.display = 'none';
+        iziToast.show({
+          ...iziOption,
+          message: "We're sorry, but you've reached the end of search results.",
+        });
+      }
     } else {
-      lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
+      loadMoreBtn.style.display = 'none';
     }
-    smoothScroll();
+  } catch (error) {
+    console.error('Error loading more images:', error);
+    iziToast.show({
+      ...iziOption,
+      message: 'An error occurred while loading more images',
+    });
+  } finally {
+    loadMoreBtn.textContent = 'Load more';
+    loadMoreBtn.disabled = false;
   }
-
-  loadMoreBtn.textContent = 'Load more';
-  loadMoreBtn.disabled = false;
 });
